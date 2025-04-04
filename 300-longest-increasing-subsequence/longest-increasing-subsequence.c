@@ -1,28 +1,29 @@
-int dp(int *nums,int numsSize,int prev,int index,int **memo){
-    if(index>=numsSize)
-        return 0;
-    int take=0,skip=0;
-    if(prev!=-1 && memo[prev][index]!=-1)
-        return memo[prev][index];
-    if(prev==-1 || nums[prev]<nums[index]){
-        take=1+dp(nums,numsSize,index,index+1,memo);
-    }
-    skip=dp(nums,numsSize,prev,index+1,memo);
-    if(prev!=-1){
-    memo[prev][index]=fmax(take,skip);
-    return memo[prev][index];
-    }else{
-        return fmax(take,skip);
-    }
-    
-}
-int lengthOfLIS(int* nums, int numsSize) {
-    int **memo=(int**)malloc(numsSize*sizeof(int *));
-    for(int i=0;i<numsSize;i++){ 
-        memo[i] = (int*)malloc(numsSize * sizeof(int));
-        for (int j = 0; j < numsSize; j++) {
-            memo[i][j] = -1;
+int binarySearch(int* res,int size,int target){
+    int low=0;
+    int right=size-1;
+    while(low<=right){
+        int mid=(low+right)/2;
+        if(res[mid]==target){
+            return mid;
+        } else if(res[mid]<target){
+            low=mid+1;
+        } else{
+            right=mid-1;
         }
     }
-    return dp(nums,numsSize,-1,0,memo);
+    return low;
+}
+int lengthOfLIS(int* nums, int numsSize) {
+    int size=0;
+    int* res=(int*)malloc(numsSize*sizeof(int));
+    res[0]=nums[0];
+    for(int i=1;i<numsSize;i++){
+        if(res[size]<nums[i]){
+            res[++size]=nums[i];
+        } else{
+            int index=binarySearch(res,size+1,nums[i]);
+            res[index]=nums[i];
+        }
+    }
+    return size+1;
 }
