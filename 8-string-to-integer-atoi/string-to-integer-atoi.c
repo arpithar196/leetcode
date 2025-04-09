@@ -1,6 +1,6 @@
 int myAtoi(char* s) {
     int i=0;
-    long long ans=0;
+    long ans=0;
     int sign=1;
     while(i<strlen(s) && s[i]==' '){
         i++;
