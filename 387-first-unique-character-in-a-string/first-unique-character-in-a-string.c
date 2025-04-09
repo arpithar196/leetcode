@@ -1,5 +1,6 @@
 int firstUniqChar(char* s) {
-    int hash[256]={0};
+    int hash[256];
+     bzero(&hash, sizeof(hash));
     for(int i=0;i<strlen(s);i++){
         hash[s[i]]++;
     }   
